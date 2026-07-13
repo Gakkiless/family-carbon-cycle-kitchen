@@ -2,6 +2,8 @@
 
 一个面向三人家庭的两日晚餐规划工具。根据设备日期自动判断高碳日、中碳日或低碳日，生成今天与明天的晚餐、完整做法和合并购物清单。
 
+在线体验：[https://gakkiless.github.io/family-carbon-cycle-kitchen/](https://gakkiless.github.io/family-carbon-cycle-kitchen/)
+
 ## 功能
 
 - 固定周碳循环：周二、周五高碳；周三、周六低碳；其余日期中碳

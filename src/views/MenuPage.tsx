@@ -1,7 +1,7 @@
 'use client'
 
-import { CalendarDays, Check, ChevronRight, Clock3, Heart, Lock, RefreshCw, Sparkles, Unlock } from 'lucide-react'
-import { carbonDescriptions, carbonLabels, formatChineseDate, fromDateKey, weekdayLabel } from '@/src/algorithms/carbonCycle'
+import { Check, ChevronRight, Clock3, Heart, Lock, RefreshCw, Sparkles, Unlock } from 'lucide-react'
+import { carbonDescriptions, carbonLabels, formatChineseDate, fromDateKey } from '@/src/algorithms/carbonCycle'
 import { recipeMap } from '@/src/data/recipes'
 import type { Recipe } from '@/src/types'
 import { totalMinutes } from '@/src/utils/format'
@@ -19,24 +19,7 @@ export function MenuPage({ onOpenRecipe }:{onOpenRecipe:(recipe:Recipe)=>void}) 
   const toggleFavorite = useAppStore(state => state.toggleFavorite)
   if (!menus.length) return null
   return <div className="page-wrap pb-28">
-    <header className="px-5 pb-5 pt-7">
-      <div className="mb-4 flex items-start justify-between">
-        <div><p className="text-xs tracking-[.18em] text-[#849079]">FAMILY KITCHEN</p><h1 className="font-serif-cn mt-1 text-[30px] text-[#31352f]">今晚吃什么</h1></div>
-        <div className="rounded-full bg-[#e8ece3] p-3 text-[#62705a]"><CalendarDays size={21}/></div>
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        {menus.map((menu,index) => {
-          const date = fromDateKey(menu.date)
-          return <div key={menu.date} className={`date-summary carbon-card-${menu.carbonType}`}>
-            <p className="text-[11px] text-stone-500">{index === 0 ? '今天' : '明天'} · {weekdayLabel(date)}</p>
-            <p className="mt-1 text-base font-semibold text-stone-700">{formatChineseDate(date)}</p>
-            <span className={`mt-3 inline-flex soft-tag carbon-${menu.carbonType}`}>{carbonLabels[menu.carbonType]}</span>
-          </div>
-        })}
-      </div>
-    </header>
-
-    <div className="space-y-5 px-4">
+    <div className="space-y-5 px-4 pt-4">
       {menus.map((menu,menuIndex) => {
         const date = fromDateKey(menu.date)
         const menuRecipes = menu.recipeIds.map(id => recipeMap[id]).filter(Boolean)
@@ -53,8 +36,8 @@ export function MenuPage({ onOpenRecipe }:{onOpenRecipe:(recipe:Recipe)=>void}) 
                 <button className="w-full text-left" onClick={() => onOpenRecipe(recipe)}>
                   <div className="mb-2 flex items-center gap-2"><span className="rounded-md bg-[#f0eee7] px-2 py-1 text-[10px] font-semibold text-[#77776f]">{dishLabels[recipe.dishType]}</span><span className="text-[11px] text-stone-400">{cuisineLabels[recipe.cuisine]}</span>{recipe.needsOven && <span className="text-[11px] text-stone-400">· 需烤箱</span>}</div>
                   <div className="flex items-center justify-between gap-3"><h3 className="text-[17px] font-semibold text-[#3f423c]">{recipe.name}</h3><ChevronRight className="shrink-0 text-stone-300" size={18}/></div>
-                  <p className="mt-2 line-clamp-1 text-xs text-stone-500">{recipe.ingredients.filter(i => !['seasoning','other'].includes(i.category)).slice(0,4).map(i => i.name).join(' · ')}</p>
-                  <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-stone-400"><span className="inline-flex items-center gap-1"><Clock3 size={13}/>{totalMinutes(recipe.prepMinutes,recipe.cookMinutes)} 分钟</span><span>{recipe.difficulty === 'easy' ? '简单' : '中等'}</span>{recipe.goodForMealPrep && <span className="inline-flex items-center gap-1"><Check size={12}/>可提前备菜</span>}</div>
+                  <p className="mt-2 line-clamp-1 text-[14px] leading-6 text-stone-500">{recipe.ingredients.filter(i => !['seasoning','other'].includes(i.category)).slice(0,4).map(i => i.name).join(' · ')}</p>
+                  <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[13px] leading-5 text-stone-400"><span className="inline-flex items-center gap-1.5"><Clock3 size={15}/>{totalMinutes(recipe.prepMinutes,recipe.cookMinutes)} 分钟</span><span>{recipe.difficulty === 'easy' ? '简单' : '中等'}</span>{recipe.goodForMealPrep && <span className="inline-flex items-center gap-1.5"><Check size={14}/>可提前备菜</span>}</div>
                 </button>
                 <div className="mt-3 flex items-center gap-2">
                   <button className={`mini-action ${locked ? 'active' : ''}`} onClick={() => toggleLock(menuIndex,recipe.id)}>{locked ? <Lock size={14}/> : <Unlock size={14}/>} {locked ? '已保留' : '保留'}</button>
